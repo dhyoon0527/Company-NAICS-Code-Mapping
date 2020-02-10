@@ -8,4 +8,5 @@
 
 ## Requirement
 Language: Python 3.6.X
+
 Data: Your own data for training dataset(company names with NAICS codes) and test dataset(only company names). For validation purposes, you can split your data with certain ratio to check the model performance
