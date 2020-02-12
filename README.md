@@ -15,4 +15,4 @@ Data: Two options
 * Industrial Directory for Muncie-Delaware County: http://www.muncie.com/Site-Selection-Data/Industrial-Directory.aspx?SeeAll=True
 * Kentucky Directory of Business & Industry: http://www.thinkkentucky.com/kyedc/kpdf/All_Facilities_Alpha.pdf
 
-> *All data used are for education purposes*
+> *All data used in here are for education purposes*
