@@ -10,9 +10,7 @@ Data: Two options
 1. Bring your own dataset of company names with their NAICS codes 
 2. Use built-in data from this repository that I webscraped from Delare County and Kentucky Directory
  
-## Abstract for Steps
-1. 
-> There will be two parts of python script. First one is about modeling. We're going to implement TF-IDF to rank the importance of partitioned words and apply it to tokenized incoming words (company name). Second script is a training set for the model, with the historical data (it should be reliable source) to document frequency of tokenized word of company name with its NAICS code. 
+
 
 
 
