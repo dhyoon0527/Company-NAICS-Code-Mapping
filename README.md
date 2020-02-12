@@ -2,7 +2,9 @@
 
 ## Overview
 * This project will help to assign input of company name with no industry code (NAICS) with predicted NAICS code. 
-* A NAICS code is a industrial classification within the North American Industry Classification System, developed by Federal Statistical Agencies for collection, analysis and publication purposes.
+* NAICS code is an industrial classification within the North American Industry Classification System, developed by Federal Statistical Agencies for collection, analysis and publication purposes.
+* Steps would be like follow
+1. 
 
 ## Requirement
 Language: Python 3.6.X
