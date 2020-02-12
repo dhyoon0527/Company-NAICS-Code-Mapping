@@ -6,7 +6,7 @@ This project will help to assign input of company name with no industry code (NA
 ### Requirements
 Language: Python 3.6.X
 
-Data: Two options
+Data: **Two options**
 1. Bring your own dataset of company names with their NAICS codes 
 2. Use built-in data from this repository that I gathered using web-scraping from Muncie-Delaware County and Kentucky Directory
 
