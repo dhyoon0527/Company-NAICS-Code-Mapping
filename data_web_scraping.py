@@ -12,8 +12,8 @@ soup = BeautifulSoup(page.content,"html.parser")
 company_list = []
 naics_list = []
     
-for hlink in soup.find_all("div",{"class": "CompanySearchResultTitle col-md-12"}):
-    company_list.append(hlink.text)
+for company in soup.find_all("div",{"class": "CompanySearchResultTitle col-md-12"}):
+    company_list.append(company.text)
     
 for naics in soup.find_all("div",{'class': "col-md-4"}):
     if naics.get_text().strip()[:7] == 'Primary':
