@@ -1,4 +1,3 @@
-
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import WordNetLemmatizer 
@@ -19,7 +18,7 @@ import os
 import time
 import sys
 
-with open('~/your_own_data_of_company_name_and_NAICS_code.txt', 'rU') as f:
+with open('~/name_industry_2019_2.txt', 'r') as f:
     reader = csv.reader(f, dialect=csv.excel_tab) # delimiter='\t',
     d = list(reader)
 
@@ -28,21 +27,18 @@ df = df.apply(lambda x: x.astype(str).str.lower())
 
 df['client_name'] = df['client_name'].map(lambda x: re.sub(r'[^A-Za-z ]','',x))
 
-#### Following codes are about filters to take out certain words ####
+xls = pd.ExcelFile('~/Excluding Words by Chad 020420.xlsx')
 
-xls = pd.ExcelFile('~/collection_of_filters.xlsx')
-
-# Exlcude People's Names
 df_cleanName = pd.read_excel(xls, 'People Names', header=None)
+list_cleanName = df_cleanName[0].tolist()
 
-list_removals = [x for x in df_cleanName[0].tolist() if x != 'nan']
+list_removals = [x for x in list_cleanName if x != 'nan']
 
-# Exclude Adjectives
 adj_removals = pd.read_excel(xls, 'Adjectives', header = None)
+list_adj = adj_removals.iloc[:,0].tolist()
 
-list_removals += adj_removals.iloc[:,0].tolist()
+list_removals += list_adj
 
-# Exclude State, City, and County
 df_city = pd.read_excel(xls, 'US State.City.County')
 
 list_city = df_city['City'].tolist()
@@ -56,8 +52,6 @@ list_county = [county.lower() for county in list_county if str(county) != 'nan']
 
 list_removals += (list_county + list_state + list_city)
 
-# Exclude Hard-Coded List of NUmbers, Directions, Months
-## You can easily find this list in google
 list_removals += ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
                   'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen',
                   'twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety','hundred',
@@ -68,17 +62,28 @@ list_removals += ['zero','one','two','three','four','five','six','seven','eight'
                   'monday','mon','tuesday','tue','wednesday','wed','thursday','thu','friday','fri'
                   'january','jan','february','feb','march','mar','april','apr','may','june','july','august',
                   'aug','septempber','sep','october','oct','novemember','nov','december','dec']
-
-# Exclude Hard-Coded List of Company Abbreviations
+                  
 list_removals += ['inc','co','llc','ltd','company','industry','dba','llp',
                   'enterprise','blvd','street','enterprise','corporation','corp']
 
 stopwords = nltk.corpus.stopwords.words('english')
 
-# Exclude English Article/Idiom
 list_removals += stopwords
 
-list_reinclude +=  = ['university','petroleum','union','church','christ','home','burger',
+df_NAICS_desc = pd.read_csv('~/2017_NAICS_Index_File.csv', header=0)
+print("All data loaded...")
+
+df_NAICS_desc.columns = ['naics', 'naics description']
+df_NAICS_desc = df_NAICS_desc.apply(lambda x: x.astype(str).str.lower())
+
+list_naics_desc = df_NAICS_desc['naics description'].tolist()
+
+list_adj_reinclude = [adj for adj in list_adj if adj in list_naics_desc]
+list_people_name_reinclude = [ppl for ppl in list_cleanName if ppl in list_naics_desc]
+
+list_reinclude = (list_adj_reinclude + list_people_name_reinclude)
+
+list_reinclude += ['university','petroleum','union','church','christ','home','burger',
                       'upchurch','school','supply','electric','rock','living','art','md',
                       'dmd','isd','od','pc','pa','do','bbbs','condo']
                       
@@ -89,6 +94,8 @@ list_clients = df[df.columns[0]].tolist()
 list_industries = df[df.columns[1]].tolist()
 
 from flashtext import KeywordProcessor
+
+start_time = time.time() # Timer Start
 
 str_clients = ", ".join(list_clients) 
 
@@ -103,10 +110,12 @@ for keyword_name, clean_name in zip(keyword_names, clean_names):
 clean_str_clients = keyword_processor.replace_keywords(str_clients)
 clean_str_clients = re.sub(" +" , " ", clean_str_clients)
 
+print("\nClient name cleaning finished...)
+
 list_clients = clean_str_clients.split(", ")
 
 cleaned_list_clients = [' '.join(set([lemmatizer.lemmatize(word) for word in sentence.split(" ") 
-                          if len(lemmatizer.lemmatize(word))>2 or word in list_list_reinclude]))
+                          if len(lemmatizer.lemmatize(word))>2 or word in list_reinclude]))
                         for sentence in list_clients] 
 
 #Uncomment this block to create normal version dataset
@@ -146,7 +155,9 @@ for ind in list(set(list_industries)):
     list_ind.extend([ind] * len(counter.keys()))
     list_word.extend(counter.keys())
     list_word_freq.extend(counter.values())
-    
+
+print("\nCounting finished. Ready to export!")
+  
 # Word count across the document     
 for word in list_word:
     list_document_freq.extend([word_dict.get(word)])
@@ -156,3 +167,5 @@ final_df = pd.DataFrame(list(zip(list_ind, list_word,list_word_freq,list_documen
 final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).reset_index(drop=True)
 
 final_df.to_csv('whatever_name_you_want.csv', encoding = 'utf-8', index = False)
+
+print("\nRunning over! Final document will be located in your local directory")
