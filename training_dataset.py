@@ -110,7 +110,7 @@ for keyword_name, clean_name in zip(keyword_names, clean_names):
 clean_str_clients = keyword_processor.replace_keywords(str_clients)
 clean_str_clients = re.sub(" +" , " ", clean_str_clients)
 
-print("\nClient name cleaning finished...)
+print("\n","Client name cleaning finished...")
 
 list_clients = clean_str_clients.split(", ")
 
@@ -156,7 +156,7 @@ for ind in list(set(list_industries)):
     list_word.extend(counter.keys())
     list_word_freq.extend(counter.values())
 
-print("\nCounting finished. Ready to export!")
+print("\n","Counting finished. Ready to export!")
   
 # Word count across the document     
 for word in list_word:
@@ -168,4 +168,4 @@ final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).
 
 final_df.to_csv('whatever_name_you_want.csv', encoding = 'utf-8', index = False)
 
-print("\nRunning over! Final document will be located in your local directory")
+print("\n","Running over! Final document will be located in your local directory")
