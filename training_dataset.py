@@ -1,13 +1,3 @@
-from nltk.corpus import stopwords
-from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.stem import WordNetLemmatizer 
-
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-lemmatizer = WordNetLemmatizer()
-
 import csv
 import pandas as pd
 import re
@@ -17,6 +7,16 @@ from collections import defaultdict
 import os
 import time
 import sys
+
+from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.stem import WordNetLemmatizer 
+
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
 
 with open('~/name_industry_2019_2.txt', 'r') as f:
     reader = csv.reader(f, dialect=csv.excel_tab) # delimiter='\t',
