@@ -19,5 +19,4 @@ for naics in soup.find_all("div",{'class': "col-md-4"}):
     if naics.get_text().strip()[:7] == 'Primary':
         naics_list.append(naics.get_text().strip().splitlines()[0][24:28])  
 
-df = pd.DataFrame(list(zip(company_list, naics_list)), columns =['Company Name', 'NAICS Code'])
-df.tail()
+web_df = pd.DataFrame(list(zip(company_list, naics_list)), columns =['Company Name', 'NAICS Code'])

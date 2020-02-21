@@ -18,16 +18,28 @@ nltk.download('punkt')
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 
-with open('~/name_industry_2019_2.txt', 'r') as f:
-    reader = csv.reader(f, dialect=csv.excel_tab) # delimiter='\t',
-    d = list(reader)
+from data_web_scraping import *
+from data_pdf_parsing import *
 
+df = pd.concat([web_df, pdf_df], ignore_index=True)
+
+'''
+Uncomment this to train with your own data set
+
+# For .txt file (for .csv file, use Pandas read_csv)
+with open('~/your_own_data_set.txt', 'r') as f:
+    reader = csv.reader(f, dialect=csv.excel_tab)
+    d = list(reader)
 df = pd.DataFrame(d[1:], columns=['client_name','industry_driver_naics'])
+'''
+
+df.columns = ['client_name', 'industry_driver_naics']
+
 df = df.apply(lambda x: x.astype(str).str.lower())
 
 df['client_name'] = df['client_name'].map(lambda x: re.sub(r'[^A-Za-z ]','',x))
 
-xls = pd.ExcelFile('~/Excluding Words by Chad 020420.xlsx')
+xls = pd.ExcelFile('Excluding.xlsx')
 
 df_cleanName = pd.read_excel(xls, 'People Names', header=None)
 list_cleanName = df_cleanName[0].tolist()
@@ -70,7 +82,7 @@ stopwords = nltk.corpus.stopwords.words('english')
 
 list_removals += stopwords
 
-df_NAICS_desc = pd.read_csv('~/2017_NAICS_Index_File.csv', header=0)
+df_NAICS_desc = pd.read_excel(xls, '2017 NAICS Description')
 print("All data loaded...")
 
 df_NAICS_desc.columns = ['naics', 'naics description']
@@ -166,6 +178,6 @@ final_df = pd.DataFrame(list(zip(list_ind, list_word,list_word_freq,list_documen
               columns =['naics', 'name','freq','freq_document']) 
 final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).reset_index(drop=True)
 
-final_df.to_csv('whatever_name_you_want.csv', encoding = 'utf-8', index = False)
+final_df.to_csv('industry_keywords.csv', encoding = 'utf-8', index = False)
 
 print("\n","Running over! Final document will be located in your local directory")
