@@ -25,6 +25,6 @@ cleaned_words = list(merged_words.values())
 pdf_company_list = [cleaned_words[i] for i in range(0,len(cleaned_words)-3) if "NAICS" in cleaned_words[i+2]]
 
 pdf_naics_list = [naics for naics in cleaned_words if "NAICS" in naics]
-pdf_naics_list = [' '.join(w for w in p.split() if w not in "NAICS: ")[:4] for p in pdf_naics_list] #Parse only first NAICS code
+pdf_naics_list = [' '.join(w for w in p.split() if w not in "NAICS: ")[:4] for p in pdf_naics_list] #Parse only the first NAICS code
 
 pdf_df = pd.DataFrame(list(zip(pdf_company_list, pdf_naics_list)), columns =['Company Name', 'NAICS Code'])
