@@ -6,7 +6,6 @@ from collections import Counter
 from collections import defaultdict
 import os
 import time
-import sys
 
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -18,8 +17,8 @@ nltk.download('punkt')
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 
-from data_web_scraping import *
-from data_pdf_parsing import *
+from data.data_web_scraping import *
+from data.data_pdf_parsing import *
 
 df = pd.concat([web_df, pdf_df], ignore_index=True)
 
@@ -39,7 +38,7 @@ df = df.apply(lambda x: x.astype(str).str.lower())
 
 df['client_name'] = df['client_name'].map(lambda x: re.sub(r'[^A-Za-z ]','',x))
 
-xls = pd.ExcelFile('Excluding.xlsx')
+xls = pd.ExcelFile('~/GitHub/data/Excluding Words.xlsx')
 
 df_cleanName = pd.read_excel(xls, 'People Names', header=None)
 list_cleanName = df_cleanName[0].tolist()
@@ -83,7 +82,7 @@ stopwords = nltk.corpus.stopwords.words('english')
 list_removals += stopwords
 
 df_NAICS_desc = pd.read_excel(xls, '2017 NAICS Description')
-print("All data loaded...")
+print("All data loaded...","\n")
 
 df_NAICS_desc.columns = ['naics', 'naics description']
 df_NAICS_desc = df_NAICS_desc.apply(lambda x: x.astype(str).str.lower())
@@ -122,7 +121,7 @@ for keyword_name, clean_name in zip(keyword_names, clean_names):
 clean_str_clients = keyword_processor.replace_keywords(str_clients)
 clean_str_clients = re.sub(" +" , " ", clean_str_clients)
 
-print("\n","Client name cleaning finished...")
+print("Client name cleaning finished...","\n")
 
 list_clients = clean_str_clients.split(", ")
 
@@ -168,7 +167,7 @@ for ind in list(set(list_industries)):
     list_word.extend(counter.keys())
     list_word_freq.extend(counter.values())
 
-print("\n","Counting finished. Ready to export!")
+print("Counting finished. Ready to export!","\n")
   
 # Word count across the document     
 for word in list_word:
@@ -180,4 +179,4 @@ final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).
 
 final_df.to_csv('industry_keywords.csv', encoding = 'utf-8', index = False)
 
-print("\n","Running over! Final document will be located in your local directory")
+print("Running over! Final document will be located in your local directory","\n")

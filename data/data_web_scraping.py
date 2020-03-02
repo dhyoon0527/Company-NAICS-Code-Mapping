@@ -20,3 +20,4 @@ for naics in soup.find_all("div",{'class': "col-md-4"}):
         naics_list.append(naics.get_text().strip().splitlines()[0][24:28])  
 
 web_df = pd.DataFrame(list(zip(company_list, naics_list)), columns =['Company Name', 'NAICS Code'])
+web_df = web_df[web_df['NAICS Code'] != '']
