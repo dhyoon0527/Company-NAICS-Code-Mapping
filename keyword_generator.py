@@ -144,39 +144,44 @@ for clientName, ind in zip(cleaned_list_clients, list_industries):
         
 df_tk_word_ind = pd.DataFrame({'word': list_tk_clients, 'ind': list_tk_industries})
 
-word_dict = {}
-word_dict = defaultdict(lambda: 0, word_dict)
+keyword_df = df_tk_word_ind.groupby('naics').agg({'term': ' '.join}).reset_index()
+keyword_df.tail()
 
-for word in list(set(list_tk_clients)):
-    word_dict[word]
-    
-list_ind = []
-list_word = []
-list_word_freq = []
-list_document_freq = []
+print("Keyword dataframe is ready!")
 
-for ind in list(set(list_industries)):
-    matching_words = (df_tk_word_ind.loc[df_tk_word_ind['ind'] == ind])['word'].tolist()
-
-    for word in list(set(matching_words)):
-        word_dict[word] += 1
-        
-    counter=collections.Counter(matching_words)
-
-    list_ind.extend([ind] * len(counter.keys()))
-    list_word.extend(counter.keys())
-    list_word_freq.extend(counter.values())
-
-print("Counting finished. Ready to export!","\n")
-  
-# Word count across the document     
-for word in list_word:
-    list_document_freq.extend([word_dict.get(word)])
-    
-final_df = pd.DataFrame(list(zip(list_ind, list_word,list_word_freq,list_document_freq)), 
-              columns =['naics', 'name','freq','freq_document']) 
-final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).reset_index(drop=True)
-
-final_df.to_csv('industry_keywords.csv', encoding = 'utf-8', index = False)
-
-print("Running over! Final document will be located in your local directory","\n")
+#word_dict = {}
+#word_dict = defaultdict(lambda: 0, word_dict)
+#
+#for word in list(set(list_tk_clients)):
+#    word_dict[word]
+#    
+#list_ind = []
+#list_word = []
+#list_word_freq = []
+#list_document_freq = []
+#
+#for ind in list(set(list_industries)):
+#    matching_words = (df_tk_word_ind.loc[df_tk_word_ind['ind'] == ind])['word'].tolist()
+#
+#    for word in list(set(matching_words)):
+#        word_dict[word] += 1
+#        
+#    counter=collections.Counter(matching_words)
+#
+#    list_ind.extend([ind] * len(counter.keys()))
+#    list_word.extend(counter.keys())
+#    list_word_freq.extend(counter.values())
+#
+#print("Counting finished. Ready to export!","\n")
+#  
+## Word count across the document     
+#for word in list_word:
+#    list_document_freq.extend([word_dict.get(word)])
+#    
+#final_df = pd.DataFrame(list(zip(list_ind, list_word,list_word_freq,list_document_freq)), 
+#              columns =['naics', 'name','freq','freq_document']) 
+#final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).reset_index(drop=True)
+#
+#final_df.to_csv('industry_keywords.csv', encoding = 'utf-8', index = False)
+#
+#print("Running over! Final document will be located in your local directory","\n")ß
