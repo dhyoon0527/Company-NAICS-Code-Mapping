@@ -10,7 +10,6 @@ import time
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import WordNetLemmatizer 
-
 import nltk
 nltk.download('stopwords')
 nltk.download('punkt')
@@ -19,8 +18,6 @@ lemmatizer = WordNetLemmatizer()
 
 from data.data_web_scraping import *
 from data.data_pdf_parsing import *
-
-df = pd.concat([web_df, pdf_df], ignore_index=True)
 
 '''
 Uncomment this to train with your own data set
@@ -32,10 +29,9 @@ with open('~/your_own_data_set.txt', 'r') as f:
 df = pd.DataFrame(d[1:], columns=['client_name','industry_driver_naics'])
 '''
 
+df = pd.concat([web_df, pdf_df], ignore_index=True)
 df.columns = ['client_name', 'industry_driver_naics']
-
 df = df.apply(lambda x: x.astype(str).str.lower())
-
 df['client_name'] = df['client_name'].map(lambda x: re.sub(r'[^A-Za-z ]','',x))
 
 xls = pd.ExcelFile('~/GitHub/data/Excluding Words.xlsx')
@@ -129,11 +125,6 @@ cleaned_list_clients = [' '.join(set([lemmatizer.lemmatize(word) for word in sen
                           if len(lemmatizer.lemmatize(word))>2 or word in list_reinclude]))
                         for sentence in list_clients] 
 
-#Uncomment this block to create normal version dataset
-#cleaned_list_clients = [' '.join(set([word for word in sentence.split(" ") 
-#                          if len(word)>2 or word in list_reinclude]))
-#                        for sentence in list_clients] 
-
 list_tk_clients = []
 list_tk_industries = []
 
@@ -148,40 +139,3 @@ keyword_df = df_tk_word_ind.groupby('naics').agg({'term': ' '.join}).reset_index
 keyword_df.tail()
 
 print("Keyword dataframe is ready!")
-
-#word_dict = {}
-#word_dict = defaultdict(lambda: 0, word_dict)
-#
-#for word in list(set(list_tk_clients)):
-#    word_dict[word]
-#    
-#list_ind = []
-#list_word = []
-#list_word_freq = []
-#list_document_freq = []
-#
-#for ind in list(set(list_industries)):
-#    matching_words = (df_tk_word_ind.loc[df_tk_word_ind['ind'] == ind])['word'].tolist()
-#
-#    for word in list(set(matching_words)):
-#        word_dict[word] += 1
-#        
-#    counter=collections.Counter(matching_words)
-#
-#    list_ind.extend([ind] * len(counter.keys()))
-#    list_word.extend(counter.keys())
-#    list_word_freq.extend(counter.values())
-#
-#print("Counting finished. Ready to export!","\n")
-#  
-## Word count across the document     
-#for word in list_word:
-#    list_document_freq.extend([word_dict.get(word)])
-#    
-#final_df = pd.DataFrame(list(zip(list_ind, list_word,list_word_freq,list_document_freq)), 
-#              columns =['naics', 'name','freq','freq_document']) 
-#final_df = final_df.sort_values(by = ['naics','freq'], ascending=[True, False]).reset_index(drop=True)
-#
-#final_df.to_csv('industry_keywords.csv', encoding = 'utf-8', index = False)
-#
-#print("Running over! Final document will be located in your local directory","\n")ß
