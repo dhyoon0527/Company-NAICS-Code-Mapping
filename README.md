@@ -1,7 +1,9 @@
 # Company-NAICS-Matching
 
 ## Getting Started
-This project will assign input of company name with no industry code (NAICS) with predicted NAICS code, using TF-IDF model with cosine similarity. To train TF-IDF model, a set of training, composed of business names and NAICS codes, is needed. After building a model, it will be deployed using Flask.
+This project will assign company name with no industry code (NAICS) with predicted NAICS code, using TF-IDF model with cosine similarity. To build TF-IDF model, training dataset for business names and NAICS codes are needed. If you have and are confident with your dataset, please use it. I gathered open source data through web scraping, pdf parsing from official NAICS description and few other county data. 
+
+Once data is ready, keyword_generator.py will wrangle the data into clean (no special characters) and lemmatized version. With this "clenaed" sets, once user types the company name they want to predict, the TF-IDF model will calculate cosine-similiarity with that name and cleaned sets. Also, sets are grouped by NAICS code, so that once the closest term is calculated, its NAICS code will be shown as a predicted NAICS code. I used cloudpickle and Flask to deploy this model.
 
 ### Requirements
 Language: Python 3.6.X
