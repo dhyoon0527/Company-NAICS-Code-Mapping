@@ -16,7 +16,7 @@ Data: Two options
 * Pandas, Numpy, Cloudpickle, Pickle, Flask, FlashText, Collections, Requests
 
 ### Application Example
-![alt text](https://raw.githubusercontent.com/dhyoon0527/Industry-Classification/Application-Example.png)
+![alt text](https://github.com/dhyoon0527/Industry-Classification/blob/master/Application%20Example.png)
 
 
 ### Data Source
