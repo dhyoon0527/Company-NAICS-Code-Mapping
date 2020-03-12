@@ -15,6 +15,9 @@ Data: Two options
 ### Libaries Used
 * Pandas, Numpy, Cloudpickle, Pickle, Flask, FlashText, Collections, Requests
 
+### Application Example
+![alt text](/Users/dyoon/Desktop/Screen Shot 2020-03-11 at 10.46.42 PM.png)
+
 ### Data Source
 * Industrial Directory for Muncie-Delaware County: http://www.muncie.com/Site-Selection-Data/Industrial-Directory.aspx?SeeAll=True
 * Kentucky Directory of Business & Industry: http://www.thinkkentucky.com/kyedc/kpdf/All_Facilities_Alpha.pdf
