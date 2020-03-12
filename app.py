@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 import dill
 
 app = Flask(__name__)
-model = dill.load(open('model.pkl', 'rb'))
+model = dill.load(open('pickles/model.pkl', 'rb'))
 
 @app.route('/')
 def home():

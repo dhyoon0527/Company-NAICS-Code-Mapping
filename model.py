@@ -11,8 +11,8 @@ def naics_pred(company_name):
 
 	assert type(company_name) == str
 
-	list_removals = pickle.load(open('list_removals.pkl','rb'))
-	keyword_df = pickle.load(open('keyword_df.pkl','rb'))
+	list_removals = pickle.load(open('pickles/list_removals.pkl','rb'))
+	keyword_df = pickle.load(open('pickles/keyword_df.pkl','rb'))
 
 	# Clean Company Name
 	company_name = re.sub(r'[^A-Za-z ]',' ',company_name)
@@ -42,14 +42,4 @@ def naics_pred(company_name):
 	
 	return top_match_df['naics'].values[0]
 
-dill.dump(naics_pred, open('model.pkl','wb'))
-
-#model = dill.load(open('model.pkl', 'rb'))
-#
-#user_input = 'brian steel company'
-#
-#print("\nNAICS prediction for {} is {}".format(user_input, model(user_input)))
-
-#with open("model.pkl", "wb") as dill_file:
-#	dill.dump(naics_pred, dill_file)
-
+dill.dump(naics_pred, open('pickles/model.pkl','wb'))
