@@ -16,7 +16,8 @@ Data: Two options
 * Pandas, Numpy, Cloudpickle, Pickle, Flask, FlashText, Collections, Requests
 
 ### Application Example
-![alt text](/Users/dyoon/Desktop/Screen Shot 2020-03-11 at 10.46.42 PM.png)
+![alt text](https://raw.githubusercontent.com/dhyoon0527/Industry-Classification/Application Example.png)
+
 
 ### Data Source
 * Industrial Directory for Muncie-Delaware County: http://www.muncie.com/Site-Selection-Data/Industrial-Directory.aspx?SeeAll=True
