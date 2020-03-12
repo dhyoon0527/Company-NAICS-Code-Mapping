@@ -4,8 +4,10 @@ import re
 import collections
 from collections import Counter
 from collections import defaultdict
+from flashtext import KeywordProcessor
 import os
 import time
+import pickle
 
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -29,13 +31,22 @@ with open('~/your_own_data_set.txt', 'r') as f:
 df = pd.DataFrame(d[1:], columns=['client_name','industry_driver_naics'])
 '''
 
-df = pd.concat([web_df, pdf_df], ignore_index=True)
+df = pd.concat([web_df, pdf_df], ignore_index=True) # Using open-source data
+
 df.columns = ['client_name', 'industry_driver_naics']
+
+# Add Official NAICS Description File into df
+xls = pd.ExcelFile('/Users/dyoon/GitHub/data/Excluding Words.xlsx')
+
+df_NAICS_desc = pd.read_excel(xls, '2017 NAICS Description')
+df_NAICS_desc.columns = ['client_name', 'industry_driver_naics']
+
+df = df.append(df_NAICS_desc, ignore_index=True)
+
 df = df.apply(lambda x: x.astype(str).str.lower())
 df['client_name'] = df['client_name'].map(lambda x: re.sub(r'[^A-Za-z ]','',x))
 
-xls = pd.ExcelFile('~/GitHub/data/Excluding Words.xlsx')
-
+## Client Name Filters ##
 df_cleanName = pd.read_excel(xls, 'People Names', header=None)
 list_cleanName = df_cleanName[0].tolist()
 
@@ -77,13 +88,9 @@ stopwords = nltk.corpus.stopwords.words('english')
 
 list_removals += stopwords
 
-df_NAICS_desc = pd.read_excel(xls, '2017 NAICS Description')
 print("All data loaded...","\n")
 
-df_NAICS_desc.columns = ['naics', 'naics description']
-df_NAICS_desc = df_NAICS_desc.apply(lambda x: x.astype(str).str.lower())
-
-list_naics_desc = df_NAICS_desc['naics description'].tolist()
+list_naics_desc = df_NAICS_desc['industry_driver_naics'].tolist()
 
 list_adj_reinclude = [adj for adj in list_adj if adj in list_naics_desc]
 list_people_name_reinclude = [ppl for ppl in list_cleanName if ppl in list_naics_desc]
@@ -99,10 +106,6 @@ list_removals = list(set(list_removals)) # unique sets
 
 list_clients = df[df.columns[0]].tolist()
 list_industries = df[df.columns[1]].tolist()
-
-from flashtext import KeywordProcessor
-
-start_time = time.time() # Timer Start
 
 str_clients = ", ".join(list_clients) 
 
@@ -133,9 +136,12 @@ for clientName, ind in zip(cleaned_list_clients, list_industries):
         list_tk_clients.append(word)
         list_tk_industries.append(ind)
         
-df_tk_word_ind = pd.DataFrame({'word': list_tk_clients, 'ind': list_tk_industries})
+df_tk_word_ind = pd.DataFrame({'term': list_tk_clients, 'naics': list_tk_industries})
 
 keyword_df = df_tk_word_ind.groupby('naics').agg({'term': ' '.join}).reset_index()
 keyword_df.tail()
 
 print("Keyword dataframe is ready!")
+
+pickle.dump(list_removals, open('list_removals.pkl','wb'))
+pickle.dump(keyword_df, open('keyword_df.pkl','wb'))

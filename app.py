@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 import dill
 
 app = Flask(__name__)
-model = dill.loads(model)
+model = dill.load(open('model.pkl', 'rb'))
 
 @app.route('/')
 def home():
@@ -12,12 +12,12 @@ def home():
 @app.route('/predict',methods=['POST'])
 def predict():
 
-    #nt_features = [int(x) for x in request.form.values()]
-    #inal_features = [np.array(int_features)]
+    user_input = [x for x in request.form.values()][0]
 
-    prediction = model(request.form.values())
+    prediction = model(user_input)
+    #prediction = [x for x in request.form.values()]
 
-    return render_template('index.html', prediction_text='Predicted NAICS code is $ {}'.format(prediction))
+    return render_template('index.html', prediction_text='Predicted NAICS code for "{}" is {}'.format(user_input.upper(),prediction))
 
 @app.route('/results',methods=['POST'])
 def results():
@@ -25,7 +25,6 @@ def results():
     data = request.get_json(force=True)
     prediction = model(data.values())
 
-    #output = prediction[0]
     return jsonify(prediction)
 
 if __name__ == "__main__":
