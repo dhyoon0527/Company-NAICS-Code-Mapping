@@ -1,11 +1,10 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
-import pickle
+import dill
 
 app = Flask(__name__)
 model = pickle.load(open('pickles/model.pkl', 'rb'))
 #model = dill.loads(model_)
-
 
 @app.route('/')
 def home():

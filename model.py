@@ -1,17 +1,9 @@
 import dill
 import pickle
 import cloudpickle
-from keyword_generator import list_removals, keyword_df
+from keyword_generator import *
 
-def naics_pred(company_name):
-	from sklearn.feature_extraction.text import TfidfVectorizer
-	from sklearn.metrics.pairwise import linear_kernel
-	from flashtext import KeywordProcessor
-	import re
-
-	assert type(company_name) == str
-
-	# Clean Company Name
+def clean_name(company_name):
 	company_name = re.sub(r'[^A-Za-z ]',' ',company_name)
 	company_name = company_name.lower()
 	
@@ -26,8 +18,17 @@ def naics_pred(company_name):
 	clean_company = keyword_processor.replace_keywords(company_name)
 	clean_company = re.sub(" +" , " ", clean_company)
 	clean_company = clean_company.strip()
+
+	return clean_company
 	
-	# Predict NAICS
+def naics_pred(company_name):
+	from sklearn.feature_extraction.text import TfidfVectorizer
+	from sklearn.metrics.pairwise import linear_kernel
+
+	assert type(company_name) == str
+
+	company_name = clean_company(company_name)
+	
 	list_term = list(keyword_df['term'].values)
 	list_term.insert(0,company_name)
 		
