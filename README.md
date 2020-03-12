@@ -1,4 +1,4 @@
-# Company-NAICS-Matching
+# Predict-Company-NAICS
 
 ## Getting Started
 This project will assign company name with no industry code (NAICS) with predicted NAICS code, using TF-IDF model with cosine similarity. To build TF-IDF model, training dataset for business names and NAICS codes are needed. If you have and are confident with your dataset, please use it. In case if you don't have your own dataset, I gathered data through web scraping and pdf parsing from open source.
