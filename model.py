@@ -1,18 +1,15 @@
 import dill
 import pickle
+import cloudpickle
+from keyword_generator import list_removals, keyword_df
 
 def naics_pred(company_name):
 	from sklearn.feature_extraction.text import TfidfVectorizer
 	from sklearn.metrics.pairwise import linear_kernel
 	from flashtext import KeywordProcessor
 	import re
-	from keyword_generator import list_removals,keyword_df
-	import pickle
 
 	assert type(company_name) == str
-
-	list_removals = pickle.load(open('pickles/list_removals.pkl','rb'))
-	keyword_df = pickle.load(open('pickles/keyword_df.pkl','rb'))
 
 	# Clean Company Name
 	company_name = re.sub(r'[^A-Za-z ]',' ',company_name)
@@ -42,4 +39,4 @@ def naics_pred(company_name):
 	
 	return top_match_df['naics'].values[0]
 
-dill.dump(naics_pred, open('pickles/model.pkl','wb'))
+cloudpickle.dump(naics_pred, open('pickles/model.pkl','wb'))

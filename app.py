@@ -1,9 +1,11 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
-import dill
+import pickle
 
 app = Flask(__name__)
-model = dill.load(open('pickles/model.pkl', 'rb'))
+model = pickle.load(open('pickles/model.pkl', 'rb'))
+#model = dill.loads(model_)
+
 
 @app.route('/')
 def home():
@@ -13,9 +15,7 @@ def home():
 def predict():
 
     user_input = [x for x in request.form.values()][0]
-
     prediction = model(user_input)
-    #prediction = [x for x in request.form.values()]
 
     return render_template('index.html', prediction_text='Predicted NAICS code for "{}" is {}'.format(user_input.upper(),prediction))
 
@@ -23,7 +23,7 @@ def predict():
 def results():
 
     data = request.get_json(force=True)
-    prediction = model(data.values())
+    prediction = model(str(data.values()))
 
     return jsonify(prediction)
 

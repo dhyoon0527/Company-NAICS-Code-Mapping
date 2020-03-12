@@ -142,6 +142,3 @@ keyword_df = df_tk_word_ind.groupby('naics').agg({'term': ' '.join}).reset_index
 keyword_df.tail()
 
 print("Keyword dataframe is ready!")
-
-pickle.dump(list_removals, open('list_removals.pkl','wb'))
-pickle.dump(keyword_df, open('keyword_df.pkl','wb'))
