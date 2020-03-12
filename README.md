@@ -12,15 +12,15 @@ Data: Two options
 1. Bring your own dataset of company names with their NAICS codes. This would be the most **ideal** option if you (or your company) have massive amount of correctly recorded sets of names with codes. Actually, my current company has 1M+ rows of such data with very high accuracy, but can't share details of data since it's confidential. That's why I introduced the second option
 2. Use built-in data from this repository that I gathered using web-scraping from Muncie-Delaware County and Kentucky Directory
 
+### Data Source
+* Industrial Directory for Muncie-Delaware County: http://www.muncie.com/Site-Selection-Data/Industrial-Directory.aspx?SeeAll=True
+* Kentucky Directory of Business & Industry: http://www.thinkkentucky.com/kyedc/kpdf/All_Facilities_Alpha.pdf
+
+> *All data are used for education purposes*
+
 ### Libaries Used
 * Pandas, Numpy, Cloudpickle, Pickle, Flask, FlashText, Collections, Requests
 
 ### Application Example
 ![alt text](https://github.com/dhyoon0527/Industry-Classification/blob/master/Application%20Example.png)
 
-
-### Data Source
-* Industrial Directory for Muncie-Delaware County: http://www.muncie.com/Site-Selection-Data/Industrial-Directory.aspx?SeeAll=True
-* Kentucky Directory of Business & Industry: http://www.thinkkentucky.com/kyedc/kpdf/All_Facilities_Alpha.pdf
-
-> *All data are used for education purposes*
