@@ -7,7 +7,6 @@ from collections import defaultdict
 from flashtext import KeywordProcessor
 import os
 import time
-import pickle
 
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize

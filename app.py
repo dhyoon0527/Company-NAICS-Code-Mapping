@@ -1,6 +1,6 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
-import dill
+import pickle
 
 app = Flask(__name__)
 model = pickle.load(open('pickles/model.pkl', 'rb'))
