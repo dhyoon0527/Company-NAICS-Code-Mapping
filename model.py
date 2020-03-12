@@ -25,7 +25,7 @@ def naics_pred(company_name):
 
 	assert type(company_name) == str
 
-	company_name = clean_company(company_name)
+	company_name = clean_name(company_name)
 	
 	list_term = list(keyword_df['term'].values)
 	list_term.insert(0,company_name)

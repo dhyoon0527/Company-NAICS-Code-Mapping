@@ -4,7 +4,6 @@ import pickle
 
 app = Flask(__name__)
 model = pickle.load(open('pickles/model.pkl', 'rb'))
-#model = dill.loads(model_)
 
 @app.route('/')
 def home():
